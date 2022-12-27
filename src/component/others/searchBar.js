@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import './searchBar.css'
-// import SearchIcon from '@material-ui/icons/Search';
-// import CloseIcon from '@material-ui/icons/Close';
+
 
 function SearchBar({ placeholder, data }) {
     const [filteredData, setFilterData] = useState([])
@@ -22,24 +21,17 @@ function SearchBar({ placeholder, data }) {
         }
     }
 
-    const clearInput = () => {
-        setFilterData([])
-        setWordEntered("")
-     }
 
 
     return (
         <div className="search">
             <div className="searchInputs">
                 <input type="text" placeholder={placeholder} value={wordEntered} onChange={handleFilter} />
-                {/* <div className="searchIcon">
-                {filteredData.lenght===0?<SearchIcon/>:<CloseIcon id="clearBtn" onClick={clearInput}/>}
-            </div> */}
             </div>
             {filteredData.length !== 0 && (
                 <div className="datResult">
-                    {filteredData.slice(0, 15).map((value) => {
-                        return <div className=" ">{value.name}</div>;
+                    {filteredData.slice(0, 2).map((value) => {
+                        return <div className="dataItem">{value.name}</div>;
                     })}</div>)}
 
         </div>
