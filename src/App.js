@@ -1,15 +1,12 @@
-// import logo from './logo.svg';
 import { useEffect, useState } from "react";
 import "./App.css";
-import SearchBar from "./component/others/searchBar";
-import Weather from "./component/others/Weather";
 import hotBg from "./assets/hot.jpg";
 import coldBg from "./assets/cold.jpg";
 import { getFormattedWeatherData } from "./weatherService";
 import Description from "./component/Description";
 
 function App() {
-  const [city, setCity] = useState("Paris");
+  const [city, setCity] = useState("Jamshedpur");
   const [weather, setWeather] = useState(null);
   const [units, setUnits] = useState("metric");
   const [bg, setBg] = useState(hotBg);
@@ -41,17 +38,11 @@ function App() {
       e.currentTarget.blur();
     }
   };
-  const list = [
-    { name: "project1", isDeleted: false, isCompleted: false },
-    { name: "project2", isDeleted: false, isCompleted: false },
-    { name: "project3", isDeleted: false, isCompleted: false },
-    { name: "project4", isDeleted: false, isCompleted: false },
-  ];
-  console.log(weather)
+  
+  // console.log(weather)
   return (
     <div className="app" style={{ backgroundImage: `url(${bg})` }}>
       <div className="overlay">
-        {/* <SearchBar /> */}
         {weather && (
           <div className="container">
             <div className="section section__inputs">
@@ -76,8 +67,6 @@ function App() {
                 }`}</h1>
               </div>
             </div>
-
-            {/* bottom description */}
             <Description weather={weather} units={units} />
           </div>
         )}
