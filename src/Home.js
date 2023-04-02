@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import "./Home.css";
 import hotBg from "./assets/hot.jpg";
 import coldBg from "./assets/cold.jpg";
 import { getFormattedWeatherData } from "./weatherService";
