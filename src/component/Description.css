@@ -21,8 +21,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    margin-bottom: 12px;
+    /* gap: 0.313rem; */
+    /* gap: 5px; */
+    /* margin-bottom: 0.75rem; */
+    /* margin-bottom: 12px; */
 }
 
 .description__card-icon>small {
@@ -33,5 +35,8 @@
     .section__descriptions {
 
         grid-template-columns: 1fr 1fr;
+    }
+    .card{
+        padding: 0.3rem;
     }
 }
