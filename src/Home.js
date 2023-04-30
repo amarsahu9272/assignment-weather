@@ -38,10 +38,13 @@ function App() {
       e.currentTarget.blur();
     }
   };
-  
+
   // console.log(weather)
   return (
-    <div className="app" style={{ backgroundImage: `url(${bg})` }}>
+    <div
+      className="app"
+      style={{ backgroundImage: `url(${bg})` }}
+    >
       <div className="overlay">
         {weather && (
           <div className="container">
