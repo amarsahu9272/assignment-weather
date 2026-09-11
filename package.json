@@ -15,15 +15,16 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "PORT=3000 HOST=0.0.0.0 react-scripts start",
+    "start": "PORT=3000 HOST=0.0.0.0 react-scripts start",
+    "build": "BUILD_PATH=dist DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "lint": "eslint src",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {

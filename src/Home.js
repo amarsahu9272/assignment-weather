@@ -14,6 +14,7 @@ function App() {
   useEffect(() => {
     const fetchWeatherData = async () => {
       const data = await getFormattedWeatherData(city, units);
+      if (!data) return;
       setWeather(data);
 
       // dynamic bg
@@ -33,8 +34,10 @@ function App() {
     setUnits(isCelsius ? "metric" : "imperial");
   };
   const enterKeyPressed = (e) => {
-    if (e.keyCode === 13) {
-      setCity(e.currentTarget.value);
+    if (e.key === "Enter" || e.keyCode === 13) {
+      if (e.currentTarget.value.trim()) {
+        setCity(e.currentTarget.value.trim());
+      }
       e.currentTarget.blur();
     }
   };
