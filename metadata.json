@@ -1,7 +1,9 @@
 {
   "name": "Weather App",
-  "description": "Weather application displaying forecasts, temperatures, and weather details for searched cities.",
-  "requestFramePermissions": [],
+  "description": "Weather application displaying forecasts, temperatures, and side-by-side weather comparisons between cities.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]

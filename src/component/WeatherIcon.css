@@ -1,0 +1,123 @@
+.weather-icon-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  user-select: none;
+}
+
+.weather-icon-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sizing options */
+.weather-icon-wrapper.size-xl {
+  width: 90px;
+  height: 90px;
+  font-size: 5.5rem;
+}
+
+.weather-icon-wrapper.size-lg {
+  width: 68px;
+  height: 68px;
+  font-size: 4.2rem;
+}
+
+.weather-icon-wrapper.size-md {
+  width: 48px;
+  height: 48px;
+  font-size: 3rem;
+}
+
+.weather-icon-wrapper.size-sm {
+  width: 34px;
+  height: 34px;
+  font-size: 2.1rem;
+}
+
+.weather-icon-wrapper.size-xs {
+  width: 24px;
+  height: 24px;
+  font-size: 1.5rem;
+}
+
+/* Weather condition specific themes & colors */
+.theme-clear-day {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.45));
+}
+
+.theme-clear-night {
+  color: #e2e8f0;
+  filter: drop-shadow(0 0 12px rgba(226, 232, 240, 0.4));
+}
+
+.theme-partly-cloudy {
+  color: #fde047;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+}
+
+.theme-cloudy {
+  color: #cbd5e1;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+}
+
+.theme-rain {
+  color: #38bdf8;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+}
+
+.theme-drizzle {
+  color: #7dd3fc;
+  filter: drop-shadow(0 0 8px rgba(125, 211, 252, 0.35));
+}
+
+.theme-thunderstorm {
+  color: #facc15;
+  filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.6));
+  animation: thunderGlow 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes thunderGlow {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(250, 204, 21, 0.9));
+  }
+  100% {
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.4));
+  }
+}
+
+.theme-snow {
+  color: #e0f2fe;
+  filter: drop-shadow(0 0 10px rgba(224, 242, 254, 0.5));
+}
+
+.theme-fog,
+.theme-haze,
+.theme-dust {
+  color: #94a3b8;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+}
+
+.theme-default {
+  color: #f1f5f9;
+}
+
+/* Optional badge */
+.weather-icon-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  margin-top: 0.25rem;
+  white-space: nowrap;
+}

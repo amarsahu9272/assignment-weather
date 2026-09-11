@@ -1,0 +1,273 @@
+.loading-skeleton-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.skeleton-spinner-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: var(--section-overlay);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #60a5fa;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Main weather skeleton */
+.skeleton-main-card {
+  width: 100%;
+  background-color: var(--section-overlay);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.skeleton-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.85rem;
+}
+
+.skeleton-line {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 0.35rem;
+}
+
+.skeleton-city {
+  width: 180px;
+  height: 24px;
+}
+
+.skeleton-pill {
+  width: 70px;
+  height: 22px;
+  border-radius: 9999px;
+}
+
+.skeleton-content-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skeleton-temp-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeleton-temp {
+  width: 130px;
+  height: 60px;
+}
+
+.skeleton-subtext {
+  width: 160px;
+  height: 18px;
+}
+
+.skeleton-icon-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skeleton-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.skeleton-desc {
+  width: 100px;
+  height: 16px;
+}
+
+.skeleton-humidity-block {
+  width: 100%;
+  height: 68px;
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Temperature Chart Skeleton */
+.skeleton-chart-card {
+  width: 100%;
+  background-color: var(--section-overlay);
+  border-radius: 0.75rem;
+  padding: 1.35rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-chart-title {
+  width: 220px;
+  height: 22px;
+}
+
+.skeleton-chart-graph {
+  width: 100%;
+  height: 200px;
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 5-Day Forecast Skeleton */
+.skeleton-forecast-card {
+  width: 100%;
+  background-color: var(--section-overlay);
+  border-radius: 0.75rem;
+  padding: 1.35rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-forecast-title {
+  width: 190px;
+  height: 22px;
+}
+
+.skeleton-forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.85rem;
+}
+
+.skeleton-forecast-item {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 0.65rem;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.skeleton-f-day {
+  width: 45px;
+  height: 14px;
+}
+
+.skeleton-f-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.skeleton-f-temp {
+  width: 60px;
+  height: 16px;
+}
+
+/* Metrics skeleton */
+.skeleton-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.skeleton-card {
+  background-color: var(--section-overlay);
+  border-radius: 0.5rem;
+  padding: 1.25rem 1rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.skeleton-card-title {
+  width: 70px;
+  height: 16px;
+}
+
+.skeleton-card-value {
+  width: 90px;
+  height: 26px;
+}
+
+/* Pulse shimmer */
+.pulse {
+  animation: pulse-shimmer 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-shimmer {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .skeleton-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .skeleton-content-row {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .skeleton-icon-block {
+    flex-direction: row;
+  }
+
+  .skeleton-circle {
+    width: 50px;
+    height: 50px;
+  }
+}
