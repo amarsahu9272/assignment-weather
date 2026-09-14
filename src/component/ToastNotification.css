@@ -1,0 +1,274 @@
+/* ==========================================================================
+   ToastNotification Component Styles
+   Floating Toast Notifications System for Weather Alerts & Errors
+   ========================================================================== */
+
+.weather-toast-container {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 380px;
+  width: calc(100vw - 2.5rem);
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  border-radius: 0.75rem;
+  padding: 1rem 1.15rem 1.15rem 1.15rem;
+  color: #ffffff;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  animation: toastSlideIn 0.35s cubic-bezier(0.34, 1.35, 0.64, 1);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.toast-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Severity Variations
+   -------------------------------------------------------------------------- */
+.toast-item.severity-error {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: linear-gradient(145deg, rgba(30, 20, 25, 0.96) 0%, rgba(15, 23, 42, 0.97) 100%);
+}
+
+.toast-item.severity-warning {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: linear-gradient(145deg, rgba(35, 28, 18, 0.96) 0%, rgba(15, 23, 42, 0.97) 100%);
+}
+
+.toast-item.severity-info,
+.toast-item.type-SUCCESS {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: linear-gradient(145deg, rgba(18, 35, 28, 0.96) 0%, rgba(15, 23, 42, 0.97) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Header Row & Icons
+   -------------------------------------------------------------------------- */
+.toast-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.toast-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toast-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.toast-icon.not-found {
+  color: #f87171;
+}
+
+.toast-icon.offline {
+  color: #fb923c;
+}
+
+.toast-icon.denied {
+  color: #facc15;
+}
+
+.toast-icon.timeout {
+  color: #facc15;
+}
+
+.toast-icon.warning {
+  color: #f87171;
+}
+
+.toast-icon.success {
+  color: #34d399;
+}
+
+.toast-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.toast-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.85rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.toast-close-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   Body & Metadata
+   -------------------------------------------------------------------------- */
+.toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.toast-message {
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.toast-meta-tag {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #93c5fd;
+  background-color: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 0.1rem 0.45rem;
+  border-radius: 0.25rem;
+  align-self: flex-start;
+}
+
+/* --------------------------------------------------------------------------
+   Action Buttons Row
+   -------------------------------------------------------------------------- */
+.toast-actions-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.toast-action-btn.retry-btn {
+  background-color: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.toast-action-btn.retry-btn:hover {
+  background-color: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.toast-suggestions-quick {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+}
+
+.quick-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.72rem;
+}
+
+.toast-quick-chip {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #e2e8f0;
+  padding: 0.15rem 0.45rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.toast-quick-chip:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border-color: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   Auto-Dismiss Progress Bar
+   -------------------------------------------------------------------------- */
+.toast-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.toast-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #f87171, #ef4444);
+  transition: width 0.05s linear;
+}
+
+.severity-warning .toast-progress-bar {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+}
+
+.severity-info .toast-progress-bar,
+.type-SUCCESS .toast-progress-bar {
+  background: linear-gradient(90deg, #34d399, #10b981);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Viewport Adjustments
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 640px) {
+  .weather-toast-container {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .toast-item {
+    padding: 0.85rem 1rem 1rem 1rem;
+  }
+}

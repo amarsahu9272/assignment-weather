@@ -27,13 +27,24 @@ export const generateTextSummary = (weather, forecast = [], units = "metric") =>
   text += `========================================\n\n`;
 
   text += `CURRENT CONDITIONS:\n`;
-  text += `• Temperature: ${Math.round(weather.temp)}${tempUnit}\n`;
-  text += `• Feels Like:  ${Math.round(weather.feels_like)}${tempUnit}\n`;
-  text += `• Condition:   ${weather.condition} (${weather.description})\n`;
-  text += `• High / Low:  ${Math.round(weather.temp_max)}${tempUnit} / ${Math.round(weather.temp_min)}${tempUnit}\n`;
-  text += `• Humidity:    ${weather.humidity}%\n`;
-  text += `• Wind Speed:  ${weather.speed} ${speedUnit}\n`;
-  text += `• Pressure:    ${weather.pressure} hPa\n\n`;
+  text += `• Temperature:    ${Math.round(weather.temp)}${tempUnit}\n`;
+  text += `• Feels Like:     ${Math.round(weather.feels_like)}${tempUnit}\n`;
+  text += `• Condition:      ${weather.condition} (${weather.description})\n`;
+  text += `• High / Low:     ${Math.round(weather.temp_max)}${tempUnit} / ${Math.round(weather.temp_min)}${tempUnit}\n`;
+  text += `• Humidity:       ${weather.humidity}%\n`;
+  text += `• Wind Speed:     ${weather.speed} ${speedUnit}${weather.windDeg != null ? ` (Bearing: ${weather.windDeg}°)` : ""}\n`;
+  if (weather.visibility != null) {
+    const visKm = (weather.visibility / 1000).toFixed(1);
+    const visMi = (weather.visibility * 0.000621371).toFixed(1);
+    text += `• Visibility:     ${units === "metric" ? `${visKm} km` : `${visMi} mi`}\n`;
+  }
+  text += `• Pressure:       ${weather.pressure} hPa\n`;
+  if (weather.sunrise && weather.sunset) {
+    const sunriseTime = new Date(weather.sunrise * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const sunsetTime = new Date(weather.sunset * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    text += `• Sunrise / Sunset: ${sunriseTime} / ${sunsetTime}\n`;
+  }
+  text += `\n`;
 
   if (forecast && forecast.length > 0) {
     text += `5-DAY FORECAST:\n`;
@@ -78,6 +89,11 @@ export const generateJsonSummary = (weather, forecast = [], units = "metric") =>
       description: weather.description,
       humidity: weather.humidity,
       windSpeed: weather.speed,
+      windBearingDegrees: weather.windDeg != null ? weather.windDeg : null,
+      windGust: weather.windGust != null ? weather.windGust : null,
+      visibilityMeters: weather.visibility != null ? weather.visibility : null,
+      sunrise: weather.sunrise ? new Date(weather.sunrise * 1000).toISOString() : null,
+      sunset: weather.sunset ? new Date(weather.sunset * 1000).toISOString() : null,
       pressure: weather.pressure,
       iconCode: weather.iconCode,
     },

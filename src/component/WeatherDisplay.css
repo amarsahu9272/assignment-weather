@@ -1,11 +1,18 @@
+/* ==========================================================================
+   WeatherDisplay Component Styles
+   Current Weather Card with Atmospheric Metrics & Solar Daylight Cycle
+   ========================================================================== */
+
 .weather-display-card {
   width: 100%;
   background-color: var(--section-overlay);
-  border-radius: 0.75rem;
+  border-radius: 0.85rem;
   padding: 1.5rem;
-  color: #ffffff;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: var(--text-main, #ffffff);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   margin-bottom: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -24,23 +31,29 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   Top Bar: Location, City Local Time & Condition Pill
+   -------------------------------------------------------------------------- */
 .weather-display-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
   padding-bottom: 0.85rem;
 }
 
 .location-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.55rem;
 }
 
 .location-pin-icon {
-  font-size: 1.4rem;
-  color: #60a5fa;
+  font-size: 1.35rem;
+  color: #38bdf8;
   flex-shrink: 0;
 }
 
@@ -48,21 +61,44 @@
   font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: var(--text-main, #ffffff);
+  margin: 0;
+}
+
+.city-local-time-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.local-time-icon {
+  font-size: 0.82rem;
+  color: #38bdf8;
 }
 
 .condition-pill {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #e2e8f0;
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.12));
+  color: var(--text-main, #ffffff);
   padding: 0.25rem 0.85rem;
   border-radius: 9999px;
   font-size: 0.82rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.18));
 }
 
+/* --------------------------------------------------------------------------
+   Main Grid: Temperature & Weather Icon / Description
+   -------------------------------------------------------------------------- */
 .weather-main-grid {
   display: flex;
   justify-content: space-between;
@@ -86,7 +122,7 @@
   font-size: 4.25rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--text-main, #ffffff);
 }
 
 .temp-unit {
@@ -94,7 +130,7 @@
   font-weight: 500;
   margin-top: 0.5rem;
   margin-left: 0.25rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
 }
 
 .temp-details-row {
@@ -102,12 +138,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
   font-size: 0.9rem;
 }
 
 .feels-like-text strong {
-  color: #ffffff;
+  color: var(--text-main, #ffffff);
   font-weight: 600;
 }
 
@@ -115,7 +151,8 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
   padding: 0.2rem 0.6rem;
   border-radius: 0.35rem;
 }
@@ -125,18 +162,19 @@
   align-items: center;
   gap: 0.2rem;
   font-size: 0.82rem;
+  color: var(--text-main, #ffffff);
 }
 
 .temp-range-icon.low {
-  color: #93c5fd;
+  color: #38bdf8;
 }
 
 .temp-range-icon.high {
-  color: #fca5a5;
+  color: #f87171;
 }
 
 .high-low-box .divider {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-secondary, rgba(255, 255, 255, 0.4));
 }
 
 .condition-hero {
@@ -148,87 +186,472 @@
   min-width: 140px;
 }
 
-.weather-art-icon {
-  width: 90px;
-  height: 90px;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
-  object-fit: contain;
+.condition-icon-badge-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
 }
 
 .condition-description {
   font-size: 1.05rem;
   font-weight: 500;
   text-transform: capitalize;
-  color: #f1f5f9;
+  color: var(--text-main, #ffffff);
+  margin-top: 0.25rem;
 }
 
-/* Prominent Humidity Card */
-.humidity-highlight-card {
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 0.5rem;
-  padding: 0.9rem 1.15rem;
+/* --------------------------------------------------------------------------
+   Atmospheric Highlights Grid (Wind & Direction, Visibility, Humidity)
+   -------------------------------------------------------------------------- */
+.atmospheric-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+  width: 100%;
+}
+
+.atmospheric-card {
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.07));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  border-radius: 0.65rem;
+  padding: 0.95rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-}
-
-.humidity-header {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
+  gap: 0.75rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.humidity-title-group {
+.atmospheric-card:hover {
+  border-color: rgba(56, 189, 248, 0.35);
+  transform: translateY(-2px);
+}
+
+.atmospheric-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.card-title-group {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 600;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
 }
 
-.humidity-icon {
-  font-size: 1.25rem;
+.card-header-icon {
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.card-header-icon.wind {
   color: #38bdf8;
 }
 
-.humidity-status-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #7dd3fc;
-  background-color: rgba(56, 189, 248, 0.15);
-  padding: 0.15rem 0.55rem;
-  border-radius: 9999px;
-  text-transform: uppercase;
+.card-header-icon.visibility {
+  color: #a78bfa;
 }
 
-.humidity-metrics {
+.card-header-icon.humidity {
+  color: #38bdf8;
+}
+
+.card-status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.wind-badge {
+  color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.14);
+}
+
+.vis-badge {
+  color: #c084fc;
+  background-color: rgba(168, 85, 247, 0.14);
+}
+
+.humidity-badge {
+  color: #38bdf8;
+  background-color: rgba(56, 189, 248, 0.14);
+}
+
+.atmospheric-primary-val {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text-main, #ffffff);
+  line-height: 1.1;
+}
+
+.atmospheric-unit-val {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+  margin-left: 0.25rem;
+}
+
+/* Wind Card Body & Compass Dial */
+.wind-content-body {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.wind-speed-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.wind-value-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.wind-kmh-subtext {
+  font-size: 0.76rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
+}
+
+.wind-gust-subtext {
+  font-size: 0.72rem;
+  color: #fb923c;
+  font-weight: 500;
+}
+
+.compass-indicator-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.compass-dial {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(56, 189, 248, 0.35);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(0, 0, 0, 0.1) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardinal {
+  position: absolute;
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  line-height: 1;
+}
+
+.cardinal-n {
+  top: 2px;
+  color: #38bdf8;
+}
+
+.cardinal-e {
+  right: 3px;
+}
+
+.cardinal-s {
+  bottom: 2px;
+}
+
+.cardinal-w {
+  left: 3px;
+}
+
+.compass-needle-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.compass-pointer-icon {
+  font-size: 1.35rem;
+  color: #38bdf8;
+  filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.5));
+}
+
+.compass-bearing-details {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.bearing-abbr {
+  color: var(--text-main, #ffffff);
+}
+
+.bearing-degrees {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
+  font-weight: 500;
+}
+
+/* Visibility & Humidity Card Bodies */
+.visibility-content-body,
+.humidity-content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.vis-caption,
+.humidity-caption {
+  font-size: 0.76rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Shared Metric Progress Track */
+.metric-progress-track {
+  width: 100%;
+  height: 7px;
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.15));
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 0.2rem;
+}
+
+.metric-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+.visibility-fill {
+  background: linear-gradient(90deg, #a78bfa, #6366f1);
+}
+
+.humidity-fill {
+  background: linear-gradient(90deg, #38bdf8, #0284c7);
+}
+
+/* --------------------------------------------------------------------------
+   Sunrise, Sunset & Solar Daylight Cycle Card
+   -------------------------------------------------------------------------- */
+.sun-cycle-card {
+  width: 100%;
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.07));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  border-radius: 0.65rem;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.sun-cycle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
+  padding-bottom: 0.65rem;
+}
+
+.sun-cycle-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sun-cycle-main-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main, #ffffff);
+}
+
+.sun-cycle-daylight-pill {
+  font-size: 0.74rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.sun-cycle-daylight-pill strong {
+  color: #fbbf24;
+}
+
+.sun-cycle-status-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #facc15;
+}
+
+.sun-times-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 1rem;
 }
 
-.humidity-number {
-  font-size: 1.5rem;
+.sun-event-tile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.sun-event-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sunrise-icon-wrap {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.22) 0%, rgba(245, 158, 11, 0.12) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fbbf24;
+}
+
+.sunset-icon-wrap {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.22) 0%, rgba(225, 29, 72, 0.12) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  color: #fb923c;
+}
+
+.sun-svg-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.sun-event-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.sun-event-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   font-weight: 700;
-  color: #ffffff;
-  min-width: 55px;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
 }
 
-.humidity-progress-track {
+.sun-event-time {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main, #ffffff);
+  line-height: 1.2;
+}
+
+.sun-event-caption {
+  font-size: 0.7rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+}
+
+/* Center Solar Progress Track */
+.solar-arc-track-container {
   flex: 1;
-  height: 8px;
-  background-color: rgba(255, 255, 255, 0.18);
-  border-radius: 9999px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
 }
 
-.humidity-progress-fill {
+.solar-track-line {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.14));
+  border-radius: 9999px;
+}
+
+.solar-track-fill {
   height: 100%;
-  background: linear-gradient(90deg, #38bdf8, #2563eb);
+  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f97316);
   border-radius: 9999px;
   transition: width 0.4s ease;
+}
+
+.solar-orb-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+  background-color: #1e293b;
+  border: 2px solid #fbbf24;
+  transition: left 0.4s ease;
+}
+
+.solar-orb-marker.night {
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.5);
+  border-color: #a78bfa;
+}
+
+.solar-track-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  font-weight: 500;
+}
+
+.daylight-duration-mid {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 900px) {
+  .atmospheric-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .sun-times-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .sun-event-tile {
+    justify-content: flex-start;
+  }
+
+  .solar-arc-track-container {
+    padding: 0.5rem 0;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -240,7 +663,7 @@
   .weather-main-grid {
     flex-direction: column-reverse;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
   .condition-hero {
@@ -252,12 +675,13 @@
     justify-content: flex-start;
   }
 
-  .weather-art-icon {
-    width: 64px;
-    height: 64px;
-  }
-
   .temp-value {
     font-size: 3.25rem;
+  }
+
+  .weather-display-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

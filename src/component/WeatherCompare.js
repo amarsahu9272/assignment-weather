@@ -15,6 +15,8 @@ import {
 import { MdOutlineWaterDrop, MdCompress, MdLocationOn } from "react-icons/md";
 import { BiHappy } from "react-icons/bi";
 import WeatherIcon from "./WeatherIcon";
+import HumidityGauge from "./HumidityGauge";
+import { formatWeatherError } from "../utils/errorUtils";
 import {
   getFormattedWeatherData,
   getWeatherByCoords,
@@ -239,6 +241,7 @@ function WeatherCompare({
   theme = "dark",
   onThemeToggle,
   onBackToSingle,
+  onToast,
 }) {
   const [city1Input, setCity1Input] = useState(initialCity1);
   const [city2Input, setCity2Input] = useState(initialCity2);
@@ -271,15 +274,19 @@ function WeatherCompare({
           setWeather1(res.data);
           setCity1Input(res.data.name);
         } else {
-          setError1(res.error || `City "${trimmed}" could not be found.`);
+          const errMsg = res.error || `City "${trimmed}" could not be found.`;
+          setError1(errMsg);
+          if (onToast) onToast(formatWeatherError(errMsg, { searchedCity: trimmed }));
         }
       } catch (err) {
-        setError1("Failed to fetch weather data for City 1.");
+        const errMsg = "Failed to fetch weather data for City 1.";
+        setError1(errMsg);
+        if (onToast) onToast(formatWeatherError(err, { searchedCity: trimmed }));
       } finally {
         setLoading1(false);
       }
     },
-    [units]
+    [units, onToast]
   );
 
   // Fetch weather for city 2
@@ -295,15 +302,19 @@ function WeatherCompare({
           setWeather2(res.data);
           setCity2Input(res.data.name);
         } else {
-          setError2(res.error || `City "${trimmed}" could not be found.`);
+          const errMsg = res.error || `City "${trimmed}" could not be found.`;
+          setError2(errMsg);
+          if (onToast) onToast(formatWeatherError(errMsg, { searchedCity: trimmed }));
         }
       } catch (err) {
-        setError2("Failed to fetch weather data for City 2.");
+        const errMsg = "Failed to fetch weather data for City 2.";
+        setError2(errMsg);
+        if (onToast) onToast(formatWeatherError(err, { searchedCity: trimmed }));
       } finally {
         setLoading2(false);
       }
     },
-    [units]
+    [units, onToast]
   );
 
   // Initial load
@@ -326,7 +337,9 @@ function WeatherCompare({
   // Geolocation for City 1
   const handleUseLocation1 = () => {
     if (!navigator.geolocation) {
-      setError1("Geolocation is not supported by your browser.");
+      const msg = "Geolocation is not supported by your browser.";
+      setError1(msg);
+      if (onToast) onToast(formatWeatherError(msg, { coords: true }));
       return;
     }
     setLocating1(true);
@@ -343,17 +356,23 @@ function WeatherCompare({
             setWeather1(res.data);
             setCity1Input(res.data.name);
           } else {
-            setError1(res.error || "Could not retrieve weather for your coordinates.");
+            const msg = res.error || "Could not retrieve weather for your coordinates.";
+            setError1(msg);
+            if (onToast) onToast(formatWeatherError(msg, { coords: true }));
           }
         } catch (err) {
-          setError1("Error fetching weather for coordinates.");
+          const msg = "Error fetching weather for coordinates.";
+          setError1(msg);
+          if (onToast) onToast(formatWeatherError(err, { coords: true }));
         } finally {
           setLocating1(false);
         }
       },
       (err) => {
         setLocating1(false);
-        setError1("Geolocation permission denied or timed out.");
+        const msg = "Geolocation permission denied or timed out.";
+        setError1(msg);
+        if (onToast) onToast(formatWeatherError(msg, { coords: true }));
       },
       { timeout: 10000 }
     );
@@ -362,7 +381,9 @@ function WeatherCompare({
   // Geolocation for City 2
   const handleUseLocation2 = () => {
     if (!navigator.geolocation) {
-      setError2("Geolocation is not supported by your browser.");
+      const msg = "Geolocation is not supported by your browser.";
+      setError2(msg);
+      if (onToast) onToast(formatWeatherError(msg, { coords: true }));
       return;
     }
     setLocating2(true);
@@ -379,17 +400,23 @@ function WeatherCompare({
             setWeather2(res.data);
             setCity2Input(res.data.name);
           } else {
-            setError2(res.error || "Could not retrieve weather for your coordinates.");
+            const msg = res.error || "Could not retrieve weather for your coordinates.";
+            setError2(msg);
+            if (onToast) onToast(formatWeatherError(msg, { coords: true }));
           }
         } catch (err) {
-          setError2("Error fetching weather for coordinates.");
+          const msg = "Error fetching weather for coordinates.";
+          setError2(msg);
+          if (onToast) onToast(formatWeatherError(err, { coords: true }));
         } finally {
           setLocating2(false);
         }
       },
       (err) => {
         setLocating2(false);
-        setError2("Geolocation permission denied or timed out.");
+        const msg = "Geolocation permission denied or timed out.";
+        setError2(msg);
+        if (onToast) onToast(formatWeatherError(msg, { coords: true }));
       },
       { timeout: 10000 }
     );
@@ -771,6 +798,17 @@ function WeatherCompare({
                   </span>
                 </div>
               </div>
+
+              {/* Circular Humidity Gauge Component */}
+              <div className="compare-city-gauge-wrapper">
+                <HumidityGauge
+                  value={weather1.humidity}
+                  temp={weather1.temp}
+                  units={units}
+                  size="sm"
+                  title="Humidity Level"
+                />
+              </div>
             </div>
           )}
         </div>
@@ -899,6 +937,17 @@ function WeatherCompare({
                       : "Humid"}
                   </span>
                 </div>
+              </div>
+
+              {/* Circular Humidity Gauge Component */}
+              <div className="compare-city-gauge-wrapper">
+                <HumidityGauge
+                  value={weather2.humidity}
+                  temp={weather2.temp}
+                  units={units}
+                  size="sm"
+                  title="Humidity Level"
+                />
               </div>
             </div>
           )}

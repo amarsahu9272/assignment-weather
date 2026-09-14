@@ -21,12 +21,15 @@ function WeatherSearch({
   onThemeToggle,
   onOpenCompare,
   isLoading,
+  onEmptySearch,
+  hasError = false,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchingSuggestions, setIsSearchingSuggestions] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [isInputShaking, setIsInputShaking] = useState(false);
 
   const containerRef = useRef(null);
   const inputRef = useRef(null);
@@ -99,6 +102,12 @@ function WeatherSearch({
       if (inputRef.current) {
         inputRef.current.blur();
       }
+    } else {
+      setIsInputShaking(true);
+      setTimeout(() => setIsInputShaking(false), 600);
+      if (onEmptySearch) {
+        onEmptySearch();
+      }
     }
   };
 
@@ -141,7 +150,11 @@ function WeatherSearch({
   return (
     <div id="weather-search-container" className="weather-search-container" ref={containerRef}>
       <form id="weather-search-form" className="weather-search-form" onSubmit={handleSubmit}>
-        <div className="search-input-wrapper">
+        <div
+          className={`search-input-wrapper ${isInputShaking ? "shake-error" : ""} ${
+            hasError ? "has-search-error" : ""
+          }`}
+        >
           <FaSearch className="search-field-icon" aria-hidden="true" />
           <input
             id="weather-search-input"

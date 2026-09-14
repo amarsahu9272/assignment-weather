@@ -15,9 +15,11 @@ import Forecast from "./component/Forecast";
 import Description from "./component/Description";
 import LoadingSkeleton from "./component/LoadingSkeleton";
 import ErrorMessage from "./component/ErrorMessage";
+import ToastNotification from "./component/ToastNotification";
 import WeatherAlerts from "./component/WeatherAlerts";
 import ExportWeather from "./component/ExportWeather";
 import WeatherCompare from "./component/WeatherCompare";
+import { formatWeatherError, ERROR_TYPES } from "./utils/errorUtils";
 
 function App() {
   const [city, setCity] = useState("Jamshedpur");
@@ -31,7 +33,19 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [error, setError] = useState(null);
+  const [toasts, setToasts] = useState([]);
   const [activeView, setActiveView] = useState("single"); // "single" | "compare"
+
+  // Toast management
+  const addToast = useCallback((toast) => {
+    const id = toast.id || `toast-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    const newToast = { ...toast, id };
+    setToasts((prev) => [newToast, ...prev.filter((t) => t.title !== toast.title).slice(0, 3)]);
+  }, []);
+
+  const removeToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   // Light / Dark mode theme preference persisted in localStorage
   const [theme, setTheme] = useState(() => {
@@ -122,24 +136,69 @@ function App() {
           setIsLoadingAlerts(false);
         }
       } else {
-        setError(currentRes.error || "Could not retrieve weather information. Please try again.");
+        const formattedErr = formatWeatherError(currentRes.error, {
+          searchedCity: targetCity,
+          coords: targetCoords,
+        });
+        setError(formattedErr);
+        addToast(formattedErr);
       }
     } catch (err) {
       console.error("Fetch weather error:", err);
-      setError("An unexpected error occurred while fetching weather data. Please try again.");
+      const formattedErr = formatWeatherError(err, {
+        searchedCity: targetCity,
+        coords: targetCoords,
+      });
+      setError(formattedErr);
+      addToast(formattedErr);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [addToast]);
 
   useEffect(() => {
     fetchWeather(city, units, coords);
   }, [city, units, coords, fetchWeather]);
 
+  // Network connection state listener
+  useEffect(() => {
+    const handleOnline = () => {
+      addToast({
+        id: `online-${Date.now()}`,
+        type: "SUCCESS",
+        title: "Connection Restored",
+        message: "You are back online. Refreshing latest weather...",
+        severity: "info",
+        duration: 4000,
+      });
+      fetchWeather(city, units, coords);
+    };
+
+    const handleOffline = () => {
+      const offlineErr = formatWeatherError("Network connection lost. You are currently offline.", {
+        searchedCity: city,
+      });
+      setError(offlineErr);
+      addToast(offlineErr);
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [city, units, coords, fetchWeather, addToast]);
+
   const handleSearch = (searchedCity) => {
     setCoords(null);
     setCity(searchedCity);
   };
+
+  const handleEmptySearch = useCallback(() => {
+    const emptyErr = formatWeatherError("Please enter a valid city name.", { searchedCity: "" });
+    addToast(emptyErr);
+  }, [addToast]);
 
   const handleUnitToggle = () => {
     setUnits((prev) => (prev === "metric" ? "imperial" : "metric"));
@@ -163,7 +222,11 @@ function App() {
    */
   const handleUseLocation = () => {
     if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
+      const geoErr = formatWeatherError("Geolocation is not supported by your browser.", {
+        type: ERROR_TYPES.GEO_UNAVAILABLE,
+      });
+      setError(geoErr);
+      addToast(geoErr);
       return;
     }
 
@@ -186,7 +249,9 @@ function App() {
         } else if (geoError.code === 3) {
           msg = "Location request timed out. Please try again.";
         }
-        setError(msg);
+        const errObj = formatWeatherError(msg, { coords: true });
+        setError(errObj);
+        addToast(errObj);
       },
       {
         enableHighAccuracy: true,
@@ -205,6 +270,14 @@ function App() {
         backgroundImage: bgConfig.backgroundImage,
       }}
     >
+      {/* Floating System-wide Toast Notification System for Weather Errors & Warnings */}
+      <ToastNotification
+        toasts={toasts}
+        onDismiss={removeToast}
+        onRetry={handleRetry}
+        onSelectSuggestion={handleSelectSuggestion}
+      />
+
       <main
         className="overlay"
         style={{
@@ -256,13 +329,14 @@ function App() {
               theme={theme}
               onThemeToggle={handleThemeToggle}
               onBackToSingle={() => setActiveView("single")}
+              onToast={addToast}
             />
           )}
 
           {/* Single City Weather Forecast View */}
           {activeView === "single" && (
             <>
-              {/* Weather Search Component with autocomplete, 'Use My Location', and search button */}
+              {/* Weather Search Component with autocomplete, 'Use My Location', empty check & shake, and search button */}
               <WeatherSearch
                 onSearch={handleSearch}
                 onUseLocation={handleUseLocation}
@@ -273,14 +347,18 @@ function App() {
                 onThemeToggle={handleThemeToggle}
                 onOpenCompare={() => setActiveView("compare")}
                 isLoading={isLoading}
+                onEmptySearch={handleEmptySearch}
+                hasError={Boolean(error)}
               />
 
               {/* Error handling banner for city not found, geolocation denied, or API failure */}
               <ErrorMessage
                 error={error}
+                searchedCity={city}
                 onDismiss={handleDismissError}
                 onRetry={handleRetry}
                 onSelectSuggestion={handleSelectSuggestion}
+                onUseLocation={handleUseLocation}
               />
 
               {/* Loading spinner and skeleton screen */}

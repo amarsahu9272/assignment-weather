@@ -117,15 +117,127 @@ const searchCitySuggestions = async (query) => {
 };
 
 /**
+ * Converts wind bearing in degrees to 16-point cardinal compass direction
+ */
+const getWindDirection = (deg) => {
+  if (deg === undefined || deg === null || isNaN(deg)) {
+    return { abbr: "VRB", label: "Variable", degrees: 0 };
+  }
+  const directions = [
+    { abbr: "N", label: "North" },
+    { abbr: "NNE", label: "North-Northeast" },
+    { abbr: "NE", label: "Northeast" },
+    { abbr: "ENE", label: "East-Northeast" },
+    { abbr: "E", label: "East" },
+    { abbr: "ESE", label: "East-Southeast" },
+    { abbr: "SE", label: "Southeast" },
+    { abbr: "SSE", label: "South-Southeast" },
+    { abbr: "S", label: "South" },
+    { abbr: "SSW", label: "South-Southwest" },
+    { abbr: "SW", label: "Southwest" },
+    { abbr: "WSW", label: "West-Southwest" },
+    { abbr: "W", label: "West" },
+    { abbr: "WNW", label: "West-Northwest" },
+    { abbr: "NW", label: "Northwest" },
+    { abbr: "NNW", label: "North-Northwest" },
+  ];
+  const normalized = ((Number(deg) % 360) + 360) % 360;
+  const index = Math.round(normalized / 22.5) % 16;
+  return { ...directions[index], degrees: Math.round(normalized) };
+};
+
+/**
+ * Returns descriptive qualitative wind classification (Beaufort scale)
+ */
+const getWindBeaufort = (speed, units = "metric") => {
+  const s = Number(speed) || 0;
+  const speedInMps = units === "metric" ? s : s * 0.44704;
+  if (speedInMps < 0.5) return "Calm";
+  if (speedInMps < 3.3) return "Light Breeze";
+  if (speedInMps < 5.5) return "Gentle Breeze";
+  if (speedInMps < 8.0) return "Moderate Breeze";
+  if (speedInMps < 10.8) return "Fresh Breeze";
+  if (speedInMps < 13.9) return "Strong Breeze";
+  if (speedInMps < 17.2) return "High Wind";
+  if (speedInMps < 20.8) return "Gale";
+  return "Severe Gale";
+};
+
+/**
+ * Formats visibility in km/m (metric) or miles (imperial) with descriptive rating
+ */
+const formatVisibility = (meters, units = "metric") => {
+  if (meters === undefined || meters === null || isNaN(meters)) {
+    return {
+      formatted: units === "metric" ? "10 km" : "6.2 mi",
+      quality: "Excellent",
+      meters: 10000,
+    };
+  }
+  const m = Number(meters);
+  let formatted = "";
+  if (units === "metric") {
+    if (m >= 1000) {
+      formatted = `${(m / 1000).toFixed(m % 1000 === 0 ? 0 : 1)} km`;
+    } else {
+      formatted = `${Math.round(m)} m`;
+    }
+  } else {
+    const miles = m * 0.000621371;
+    formatted = `${miles.toFixed(miles >= 10 ? 0 : 1)} mi`;
+  }
+
+  let quality = "Excellent";
+  if (m < 1000) quality = "Dense Fog";
+  else if (m < 2000) quality = "Poor";
+  else if (m < 5000) quality = "Moderate / Hazy";
+  else if (m < 9000) quality = "Good";
+  else quality = "Excellent";
+
+  return { formatted, quality, meters: m };
+};
+
+/**
+ * Formats sunrise/sunset timestamps taking into account the city's timezone offset
+ */
+const formatSunTime = (timestamp, timezoneOffsetSec = 0) => {
+  if (!timestamp) return "--:--";
+  try {
+    if (timezoneOffsetSec !== null && timezoneOffsetSec !== undefined) {
+      const utcMs = timestamp * 1000;
+      const cityDate = new Date(utcMs + timezoneOffsetSec * 1000);
+      const hours = cityDate.getUTCHours();
+      const minutes = cityDate.getUTCMinutes();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      return `${formattedHours}:${formattedMinutes} ${ampm}`;
+    }
+    return new Date(timestamp * 1000).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  } catch (e) {
+    return new Date(timestamp * 1000).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
+};
+
+/**
  * Parses raw OpenWeatherMap weather response into standardized object
  */
 const parseWeatherData = (data, fallbackCity = "") => {
   const {
     coord,
     weather,
-    main: { temp, feels_like, temp_min, temp_max, pressure, humidity },
-    wind: { speed },
-    sys: { country } = {},
+    main: { temp, feels_like, temp_min, temp_max, pressure, humidity } = {},
+    wind = {},
+    visibility,
+    sys = {},
+    timezone = 0,
+    dt,
     name,
   } = data;
 
@@ -136,6 +248,13 @@ const parseWeatherData = (data, fallbackCity = "") => {
     icon = "01d",
     main: conditionMain = "Clear",
   } = weatherItem;
+
+  const speed = wind.speed !== undefined ? wind.speed : 0;
+  const windDeg = wind.deg !== undefined ? wind.deg : 0;
+  const windGust = wind.gust !== undefined ? wind.gust : null;
+  const country = sys.country || "";
+  const sunrise = sys.sunrise || null;
+  const sunset = sys.sunset || null;
 
   return {
     coord: coord || null,
@@ -151,7 +270,14 @@ const parseWeatherData = (data, fallbackCity = "") => {
     pressure,
     humidity,
     speed,
-    country: country || "",
+    windDeg,
+    windGust,
+    visibility: visibility !== undefined ? visibility : 10000,
+    sunrise,
+    sunset,
+    timezone,
+    dt: dt || Math.floor(Date.now() / 1000),
+    country,
     name: name || fallbackCity,
   };
 };
@@ -642,4 +768,8 @@ export {
   getWeatherAlerts,
   searchCitySuggestions,
   makeIconURL,
+  getWindDirection,
+  getWindBeaufort,
+  formatVisibility,
+  formatSunTime,
 };

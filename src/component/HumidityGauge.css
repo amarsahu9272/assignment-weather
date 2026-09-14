@@ -1,0 +1,228 @@
+/* ==========================================================================
+   HumidityGauge Component Styles
+   Circular Gauge / Radial Hygrometer Instrument Chart
+   ========================================================================== */
+
+.humidity-gauge-component {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   Header Bar
+   -------------------------------------------------------------------------- */
+.gauge-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.gauge-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+}
+
+.gauge-header-icon {
+  font-size: 1.05rem;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.gauge-title-text {
+  letter-spacing: 0.01em;
+}
+
+.gauge-status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   SVG Canvas & Central Values
+   -------------------------------------------------------------------------- */
+.gauge-svg-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 210px;
+  margin: 0 auto;
+  aspect-ratio: 200 / 175;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+.gauge-track-bg {
+  stroke: var(--card-bg-subtle, rgba(255, 255, 255, 0.12));
+  opacity: 0.85;
+}
+
+.gauge-comfort-band {
+  stroke: #10b981;
+  opacity: 0.5;
+}
+
+.gauge-tick-line {
+  stroke: var(--text-secondary, rgba(255, 255, 255, 0.45));
+  stroke-linecap: round;
+}
+
+.gauge-tick-line.mid-tick {
+  stroke: var(--text-secondary, rgba(255, 255, 255, 0.65));
+}
+
+.gauge-scale-label {
+  fill: var(--text-secondary, rgba(255, 255, 255, 0.55));
+  font-size: 9.5px;
+  font-weight: 600;
+  font-family: inherit;
+  user-select: none;
+}
+
+.gauge-scale-label.mid {
+  fill: var(--text-secondary, rgba(255, 255, 255, 0.65));
+}
+
+/* Center Content Overlay */
+.gauge-center-content {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.gauge-center-icon-wrap {
+  font-size: 1.15rem;
+  line-height: 1;
+  margin-bottom: 0.1rem;
+  transition: color 0.3s ease;
+}
+
+.gauge-value-row {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.gauge-primary-number {
+  font-size: 2.15rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-main, #ffffff);
+}
+
+.gauge-percent-sign {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+  margin-left: 0.15rem;
+}
+
+.gauge-comfort-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+  margin-top: 0.15rem;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Meta & Dew Point Pill
+   -------------------------------------------------------------------------- */
+.gauge-footer-meta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.gauge-desc-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.75));
+  line-height: 1.35;
+  margin: 0;
+}
+
+.gauge-dew-point-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--card-bg-subtle, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15));
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.85));
+}
+
+.gauge-dew-point-pill .dew-label {
+  font-weight: 500;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.65));
+}
+
+.gauge-dew-point-pill .dew-val {
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   Size Variations
+   -------------------------------------------------------------------------- */
+.humidity-gauge-component.size-sm .gauge-svg-wrapper {
+  max-width: 160px;
+}
+
+.humidity-gauge-component.size-sm .gauge-primary-number {
+  font-size: 1.65rem;
+}
+
+.humidity-gauge-component.size-sm .gauge-percent-sign {
+  font-size: 0.9rem;
+}
+
+.humidity-gauge-component.size-sm .gauge-center-icon-wrap {
+  font-size: 0.95rem;
+}
+
+.humidity-gauge-component.size-lg .gauge-svg-wrapper {
+  max-width: 250px;
+}
+
+.humidity-gauge-component.size-lg .gauge-primary-number {
+  font-size: 2.6rem;
+}
